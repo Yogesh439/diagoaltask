@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Birthday Countdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 50px;
+    }
+    #result {
+      margin-top: 10px;
+    }
+    /* CSS for text fields */
+input[type="number"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 80px; /* Adjust width as needed */
+  box-sizing: border-box; /* Ensure padding and border don't increase the width */
+}
+
+/* CSS for button */
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Background color */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Margin for result */
+#result {
+  margin-top: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Next Birthday Countdown</h1>
+  <div>
+    <label for="year">Year:</label>
+    <input type="number" id="year" min="1900" max="2100" required>
+  </div>
+  <div>
+    <label for="month">Month:</label>
+    <input type="number" id="month" min="1" max="12" required>
+  </div>
+  <div>
+    <label for="day">Day:</label>
+    <input type="number" id="day" min="1" max="31" required>
+  </div>
+  <button onclick="calculateCountdown()">Calculate Countdown</button>
+  <div id="result"></div>
+
+  <script>
+    function calculateCountdown() {
+      const year = parseInt(document.getElementById("year").value);
+      const month = parseInt(document.getElementById("month").value) - 1; // Month is 0-indexed
+      const day = parseInt(document.getElementById("day").value);
+
+      const now = new Date();
+      const nextBirthday = new Date(year, month, day);
+      
+      if (isNaN(nextBirthday.getTime())) {
+        document.getElementById("result").textContent = "Invalid date of birth.";
+        return;
+      }
+
+      nextBirthday.setFullYear(now.getFullYear());
+
+      if (nextBirthday.getTime() < now.getTime()) {
+        nextBirthday.setFullYear(now.getFullYear() + 1);
+      }
+
+      const timeUntilBirthday = nextBirthday - now;
+
+      const months = Math.floor(timeUntilBirthday / (1000 * 60 * 60 * 24 * 30));
+      const days = Math.floor((timeUntilBirthday % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeUntilBirthday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeUntilBirthday % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeUntilBirthday % (1000 * 60)) / 1000);
+
+      document.getElementById("result").textContent = `Time until next birthday: ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+    }
+
+    setInterval(calculateCountdown, 1000); // Update countdown every second
+  </script>
+</body>
+</html>

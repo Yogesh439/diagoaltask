@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator</title>
+  <style>
+    /* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0; /* Light gray background */
+  color: #333; /* Dark gray text */
+  padding: 20px;
+}
+
+h1 {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+/* Container Styles */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+label {
+  width: 80px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="number"] {
+  width: 60px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #333; /* Dark gray button */
+  color: #fff; /* White text */
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #555; /* Darker gray on hover */
+}
+
+/* Result Styles */
+#result {
+  text-align: left;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  label {
+    width: 100%;
+    text-align: center;
+  }
+
+  input[type="number"] {
+    width: calc(100% - 90px);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <h1>Age Calculator</h1>
+  <div>
+    <label for="year">Year:</label>
+    <input type="number" id="year" min="1900" max="2100" required>
+  </div>
+  <div>
+    <label for="month">Month:</label>
+    <input type="number" id="month" min="1" max="12" required>
+  </div>
+  <div>
+    <label for="day">Day:</label>
+    <input type="number" id="day" min="1" max="31" required>
+  </div>
+  <button onclick="calculateAge()">Calculate Age</button>
+  <div id="result"></div>
+
+  <script>
+    function calculateAge() {
+      const year = parseInt(document.getElementById("year").value);
+      const month = parseInt(document.getElementById("month").value) - 1; // Month is 0-indexed
+      const day = parseInt(document.getElementById("day").value);
+
+      const dob = new Date(year, month, day);
+      const now = new Date();
+
+      if (isNaN(dob.getTime())) {
+        document.getElementById("result").textContent = "Invalid date of birth.";
+        return;
+      }
+
+      const ageInMilliseconds = now - dob;
+      const ageInSeconds = ageInMilliseconds / 1000;
+
+      const years = Math.floor(ageInSeconds / (60 * 60 * 24 * 365.25));
+      const months = Math.floor((ageInSeconds % (60 * 60 * 24 * 365.25)) / (60 * 60 * 24 * (365.25 / 12)));
+      const days = Math.floor((ageInSeconds % (60 * 60 * 24 * (365.25 / 12))) / (60 * 60 * 24));
+      const hours = Math.floor((ageInSeconds % (60 * 60 * 24)) / (60 * 60));
+      const minutes = Math.floor((ageInSeconds % (60 * 60)) / 60);
+      const seconds = Math.floor(ageInSeconds % 60);
+
+      document.getElementById("result").textContent = `Age: ${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+    }
+
+    setInterval(calculateAge, 1000); // Update age every second
+  </script>
+</body>
+</html>
